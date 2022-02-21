@@ -1,0 +1,17 @@
+cc_test(
+    name = "all_test",
+    srcs = ["all_test.cc"],
+    deps = [
+        "@gtest//:gtest_main",
+        "//utils:basic_lib",
+    ],
+)
+
+#cc_test(
+#    name = "ssl_test",
+#    srcs = ["ssl_test.cc"],
+#    deps = [
+#        "@gtest//:gtest_main",
+#        "//utils:ssl_test",
+#    ],
+#)

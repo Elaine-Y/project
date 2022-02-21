@@ -1,0 +1,115 @@
+// referring to https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_2.shtml
+syntax = "proto3";
+package helloworld;
+
+// import "google/api/annotations.proto";
+
+option go_package = "helloworld/gen";
+
+service Hello {
+  rpc GetKey(Request) returns (Response) {
+    // option (google.api.http) = {
+      // get: "/v3/pay/transactions/out-trade-no/{out_trade_no}"
+    // };
+  }
+}
+
+message Request {
+  string out_trade_no = 1;  // Mapped to URL path 
+  string mchid = 2;         // Mapped to query parameter mchid
+}
+
+message Payer {
+  string openid = 1;
+}
+
+message Amount {
+  int64 total = 1;
+  int64 payer_total = 2;
+  string currency = 3;
+  string payer_currency = 4;
+}
+
+message SceneInfo {
+  string device_id = 1;
+}
+
+message GoodsDetail {
+  string goods_id = 1;
+  int64 quantity = 2;
+  int64 unit_price = 3;
+  int64 discount_amount = 4;
+  string goods_remark = 5;
+}
+
+message PromotionDetial {
+  string coupon_id = 1;
+  string name = 2;
+
+  enum SCOPE {
+    GLOBAL = 0;
+    SINGLE = 1;
+  }
+  SCOPE scope = 3;
+  
+  enum TYPE {
+    CASH = 0;
+    NOCASH = 1;
+  }
+  TYPE type = 4;
+
+  int64 amount = 5;
+  string stock_id = 6;
+  int64 wechatpay_contribute = 7;
+  int64 merchant_contribute = 8;
+  int64 other_contribute = 9;
+  // only CNY
+  string currency = 10;
+  // referring to https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_5.shtml
+  repeated GoodsDetail goods_detail = 11;
+}
+
+message Response {
+  string appid = 1;
+  // mchid same as Request
+  string mchid = 2;
+  string out_trade_no = 3;
+  string transaction_id = 4;
+  
+  enum TradeType {
+    JSAPI = 0;
+    NATIVE = 1;
+    APP = 2;
+    MICROPAY = 3;
+    MWEB = 4;
+    FACEPAY = 5;
+  }
+  TradeType trade_type = 5;
+
+  enum TradeState{
+    SUCCESS = 0;
+    REFUND = 1;
+    NOTPAY = 2;
+    CLOSED = 3;
+    REVOKED = 4;
+    USERPAYING = 5;
+    PAYERROR = 6;
+  }
+  TradeState trade_state = 6;
+
+  string trade_state_desc = 7;
+
+  // referring to https://pay.weixin.qq.com/wiki/doc/apiv3/terms_definition/chapter1_1_3.shtml#part-6
+  string bank_type = 8;
+  string attach = 9;
+  string success_time = 10;
+  Payer payer = 11;
+  Amount amount = 12;
+  SceneInfo scene_info = 13;
+  
+  // referring to https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_5.shtml
+  repeated PromotionDetial promotion_detail = 14;
+  int32 err_code = 15;       // 业务错误码
+  string err_msg = 16;       // 业务错误信息
+
+}

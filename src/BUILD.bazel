@@ -1,0 +1,38 @@
+cc_library(
+    name = "query_info",
+    srcs = ["query_info.cc"],
+    hdrs = ["query_info.h"],
+    deps = [
+        "//proto:hello_grpc",
+        "//utils:utils",
+        "//src/mysql:mysql_pool",
+        "@com_github_grpc_grpc//:grpc++",
+        "@com_github_grpc_grpc//:grpc++_reflection",
+    ],
+    linkopts = ['-ldl', '-lmysqlclient']
+)
+
+cc_binary(
+    name = "server",
+    srcs = ["server.cc"],
+    deps = [
+        "//proto:hello_grpc",
+        "//utils:utils",
+        ":query_info",
+        "@com_github_grpc_grpc//:grpc++",
+        "@com_github_grpc_grpc//:grpc++_reflection",
+    ],
+    linkopts = ['-ldl', '-lmysqlclient']
+)
+
+cc_binary(
+    name = "client",
+    srcs = ["client.cc"],
+    deps = [
+        "//proto:hello_grpc",
+        "//utils:utils",
+        "@com_github_grpc_grpc//:grpc++",
+        "@sqlite3//:sqlite3",
+    ],
+    linkopts = ['-ldl']
+)

@@ -1,0 +1,6 @@
+cc_library(
+    name = "mysql_pool",
+    srcs = ["mysql_pool.cc"],
+    hdrs = ["mysql_pool.h"],
+    visibility = ["//visibility:public"],
+)

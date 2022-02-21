@@ -1,0 +1,30 @@
+# load("@com_github_grpc_grpc//bazel:grpc_build_system.bzl", "grpc_proto_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+package(default_visibility = ["//visibility:public"])
+
+proto_library(
+    name = "hello_grpc_origin",
+    srcs = ["hello.proto"],
+    deps = [
+        "@com_google_googleapis//google/api:annotations_proto",
+    ],
+)
+
+load(
+    "@com_google_googleapis_imports//:imports.bzl",
+    "cc_grpc_library",
+    "cc_proto_library",
+)
+
+cc_proto_library(
+    name = "hello_grpc_proto",
+    deps = [":hello_grpc_origin"],
+)
+
+cc_grpc_library(
+    name = "hello_grpc",
+    srcs = [":hello_grpc_origin"],
+    grpc_only = True,
+    deps = [":hello_grpc_proto"],
+)

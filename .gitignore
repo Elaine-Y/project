@@ -1,0 +1,8 @@
+# VS Code
+.vscode
+
+# bazel build progress
+bazel-bin
+bazel-demo
+bazel-out
+bazel-testlogs
